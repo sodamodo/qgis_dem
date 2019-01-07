@@ -1,0 +1,6 @@
+version: '3.2'
+services:
+  intersections:
+    build:
+     dockerfile: Dockerfile
+     context: .
