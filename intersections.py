@@ -18,9 +18,11 @@ for f in box_source.getFeatures():
         if a.geometry().intersects(f.geometry()):
             intersection = a.geometry().intersection(f.geometry())
             logging.warning("INTERSECTED")
+            if f["FILE_ID"] not in selections:
+                    selections.append( f["FILE_ID"] )
             #print intersection.exportToWkt()
+
             #same result with .within() and even with a and f switched (the docs aren't that clear on that)
-            selections.append( f["FILE_ID"] )
             break #only one or less intersection are possible
 
 logging.warning(selections)

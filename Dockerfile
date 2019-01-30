@@ -11,8 +11,8 @@ RUN pip3 install sphinx
 COPY NED_Reference/ /NED_Reference
 COPY . /
 
-RUN chmod 777 -R ./NED_Reference 
+RUN chmod 777 -R ./NED_Reference
 RUN ls
 RUN cd NED_Reference && ls
 
-ENTRYPOINT ["python3", "intersections.py"]
+ENTRYPOINT ["python3", "dem.py"]
