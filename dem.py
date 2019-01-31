@@ -2,6 +2,9 @@ from osgeo import ogr
 import os
 import logging
 import requests
+import glob
+
+# import wget
 # import zipfile
 
 
@@ -14,7 +17,6 @@ def getBoxes(shapefile_path="./test_shape/test_shape.shp"):
 
     box_datasource = driver.Open(box_shapefile, 0)
     box_layer = box_datasource.GetLayer()
-
     input_datasource = driver.Open(input_shapefile, 0)
     input_layer = input_datasource.GetLayer()
 
@@ -43,21 +45,20 @@ def download_files(link_list):
 
     for link in link_list:
         logging.warning("Now downloading file {current_file} of {number_of_files}".format(current_file=link_list.index(link) + 1, number_of_files=len(link_list)))
-        url = link["link"]
-        r = requests.get('https://placekitten.com/200/300')
-        with open('./data/{}.jpg'.format(link["box_id"]), 'wb') as f:
-            f.write(r.content)
+        # url = link["link"]
+        url = "https://commons.wikimedia.org/wiki/File:Random.jpg"
+        r = requests.get(url, stream=True)
+        with open('./data/{}.zip'.format(link["box_id"]), 'wb') as f:
 
-        #     # total_length = int(r.headers.get('content-length'))
-        #     for chunk in r.iter_content(chunk_size):
-        #         if chunk:
-        #             f.write(chunk)
-                # bytes_transferred += len(chunk)
-                # percentage = bytes_transferred/total_length * 100
-                # logging.warning("=====percentage=====")
-                # logging.warning(percentage)
-        # So it only downloads one file
-            # f.write(r.content)
+
+            total_length = int(r.headers.get('content-length'))
+            for chunk in r.iter_content(chunk_size):
+                if chunk:
+                    f.write(chunk)
+                bytes_transferred += len(chunk)
+                percentage = bytes_transferred/total_length * 100
+                logging.warning("=====percentage=====")
+                logging.warning(percentage)
         break
 
 boxid_list = getBoxes()
@@ -65,8 +66,7 @@ logging.warning(boxid_list)
 link_list = make_links(boxid_list)
 logging.warning(link_list)
 download_files(link_list)
-
-
+logging.warning(os.listdir('./data'))
 
 
 
