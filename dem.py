@@ -45,12 +45,10 @@ def download_files(link_list):
 
     for link in link_list:
         logging.warning("Now downloading file {current_file} of {number_of_files}".format(current_file=link_list.index(link) + 1, number_of_files=len(link_list)))
-        # url = link["link"]
-        url = "https://commons.wikimedia.org/wiki/File:Random.jpg"
+        url = link["link"]
+        # url = "https://commons.wikimedia.org/wiki/File:Random.jpg"
         r = requests.get(url, stream=True)
         with open('./data/{}.zip'.format(link["box_id"]), 'wb') as f:
-
-
             total_length = int(r.headers.get('content-length'))
             for chunk in r.iter_content(chunk_size):
                 if chunk:
